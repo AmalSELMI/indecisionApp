@@ -8,7 +8,28 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// Components can render other components
+// How we lose binding in event handlers>>fix with bind
+
+// const obj = {
+//   name: 'Vikram',
+//   getName(){
+//     return this.name;
+//   }
+// };
+// console.log(obj.name);
+// returns vikram
+
+// const func = function () {
+//   console.log(this);
+// }
+// func();
+// returns undefined
+
+// const getName = obj.getName.bind(obj);
+// const getName = obj.getName.bind({name:'Amaru'});>>Forces the context=name
+// console.log(getName());
+// error : we lose this binding >> cannot read prop name of undefined
+
 
 var IndecisionApp = function (_React$Component) {
   _inherits(IndecisionApp, _React$Component);
@@ -51,7 +72,6 @@ var Header = function (_React$Component2) {
   _createClass(Header, [{
     key: 'render',
     value: function render() {
-      console.log(this.props);
       return React.createElement(
         'div',
         null,
@@ -82,6 +102,11 @@ var Action = function (_React$Component3) {
   }
 
   _createClass(Action, [{
+    key: 'handlePick',
+    value: function handlePick() {
+      alert('handlePick');
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
@@ -89,7 +114,7 @@ var Action = function (_React$Component3) {
         null,
         React.createElement(
           'button',
-          null,
+          { onClick: this.handlePick },
           'What should I do?'
         )
       );
@@ -98,33 +123,52 @@ var Action = function (_React$Component3) {
 
   return Action;
 }(React.Component);
+// Renders an instance of option for each option+set text and key 
+//map converts from array to string
 
 var Options = function (_React$Component4) {
   _inherits(Options, _React$Component4);
 
-  function Options() {
+  function Options(props) {
     _classCallCheck(this, Options);
 
-    return _possibleConstructorReturn(this, (Options.__proto__ || Object.getPrototypeOf(Options)).apply(this, arguments));
+    var _this4 = _possibleConstructorReturn(this, (Options.__proto__ || Object.getPrototypeOf(Options)).call(this, props));
+
+    _this4.handleRemoveAll = _this4.handleRemoveAll.bind(_this4);
+    // this binding in constructor allows it for every event use
+    return _this4;
   }
+  // Const props=this.props + call super to access/connect props
+
 
   _createClass(Options, [{
+    key: 'handleRemoveAll',
+    value: function handleRemoveAll() {
+      console.log(this.props.options);
+      // alert('handleRemoveAll');
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         'div',
         null,
+        React.createElement(
+          'button',
+          { onClick: this.handleRemoveAll },
+          'Remove All'
+        ),
         this.props.options.map(function (option) {
           return React.createElement(Option, { key: option, optionText: option });
         })
-      )
-      //map converts from array to string
-      ;
+      );
     }
   }]);
 
   return Options;
 }(React.Component);
+// adding bind(this) after eventhandler allows it to have the same context/this as the render
+
 
 var Option = function (_React$Component5) {
   _inherits(Option, _React$Component5);
@@ -149,6 +193,8 @@ var Option = function (_React$Component5) {
 
   return Option;
 }(React.Component);
+//set up form with input and submit
+
 
 var AddOption = function (_React$Component6) {
   _inherits(AddOption, _React$Component6);
@@ -160,12 +206,31 @@ var AddOption = function (_React$Component6) {
   }
 
   _createClass(AddOption, [{
+    key: 'handleAddOption',
+    value: function handleAddOption(e) {
+      e.preventDefault();
+
+      var option = e.target.elements.option.value.trim();
+      if (option) {
+        alert('Option');
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       return React.createElement(
         'div',
         null,
-        'AddOption component here'
+        React.createElement(
+          'form',
+          { onSubmit: this.handleAddOption },
+          React.createElement('input', { type: 'text', name: 'option' }),
+          React.createElement(
+            'button',
+            null,
+            'Add Option'
+          )
+        )
       );
     }
   }]);
