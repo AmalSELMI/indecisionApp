@@ -4,19 +4,29 @@
   "main": "index.js",
   "author": "Andrew Mead",
   "license": "MIT",
+  "scripts": {
+    "serve": "live-server public/",
+    "build": "webpack",
+    "dev-server": "webpack-dev-server"
+  },
   "dependencies": {
+    "babel-cli": "6.24.1",
+    "babel-core": "6.25.0",
+    "babel-loader": "7.1.1",
+    "babel-plugin-transform-class-properties": "6.24.1",
     "babel-preset-env": "1.5.2",
     "babel-preset-react": "6.24.1",
+    "css-loader": "0.28.4",
     "live-server": "^1.2.0",
-    "preset": "^1.0.0",
-    "react": "^16.4.0-alpha.0911da3",
-    "react-dom": "^16.2.0",
-    "react-scripts": "^1.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "node-sass": "4.5.3",
+    "normalize.css": "7.0.0",
+    "react": "15.6.1",
+    "react-dom": "15.6.1",
+    "react-modal": "2.2.2",
+    "sass-loader": "6.0.6",
+    "style-loader": "0.18.2",
+    "validator": "8.0.0",
+    "webpack": "3.1.0",
+    "webpack-dev-server": "2.5.1"
   }
 }
